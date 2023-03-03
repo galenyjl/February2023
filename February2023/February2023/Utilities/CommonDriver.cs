@@ -14,10 +14,10 @@ namespace February2023.Utilities
     {
         public IWebDriver driver;
 
-        [SetUp]
+        [OneTimeSetUp]
         public void LoginSteps()
         {
-            driver = new ChromeDriver(@"D:/February2023");
+            driver = new ChromeDriver();
 
             // Login page object initialization and definition
             LoginPage loginPageObj = new LoginPage();
@@ -25,7 +25,7 @@ namespace February2023.Utilities
         }
 
 
-        [TearDown]
+        [OneTimeTearDown]
         public void ClosingSteps()
         {
             driver.Quit();

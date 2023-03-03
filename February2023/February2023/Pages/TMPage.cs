@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using February2023.Utilities;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -66,13 +67,13 @@ namespace February2023.Pages
 
         public void EditTM(IWebDriver driver)
         {
+            Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[1]", 3);
 
             // Click on Edit Buttonto make changes to type Code
-            Thread.Sleep(1000);
-            IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]"));
+            IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
             goToLastPageButton.Click();
 
-            IWebElement recordToBeEdited = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/div[2]/table/tbody/tr[last()]/td[1]"));
+            IWebElement recordToBeEdited = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
 
             if (recordToBeEdited.Text == "February2023")
             {
@@ -93,17 +94,16 @@ namespace February2023.Pages
             //Identify Code Text Box and Write New Record
             IWebElement CodeTextBox = driver.FindElement(By.XPath("//*[@id=\"Code\"]"));
             CodeTextBox.SendKeys("123456");
-
+            Thread.Sleep(1500);
 
             //Identify and Click on Save Button
             IWebElement SaveButton = driver.FindElement(By.Id("SaveButton"));
             SaveButton.Click();
-
+            Wait.WaitToBeVisible(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[1]", 3);
 
             //Identify and Click on Last Page Button Page
-            Thread.Sleep(1000);
             driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]")).Click();
-            Thread.Sleep(1000);
+            Thread.Sleep(1500);
             IWebElement lastEditedRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
 
             Assert.That(lastEditedRecord.Text == "123456", "Record hasn't been edited.");
@@ -112,16 +112,18 @@ namespace February2023.Pages
 
         public void DeleteTM(IWebDriver driver)
         {
-            //Identify and Click on Last Page Button Page
-            Thread.Sleep(1000);
-            driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span")).Click();
+            Wait.WaitToBeVisible(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[1]", 3);
 
-            IWebElement recordToBeDeleted = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/div[2]/table/tbody/tr[last()]/td[1]"));
+            //Identify and Click on Last Page Button Page
+            driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span")).Click();
+            Thread.Sleep(1000);
+
+            IWebElement recordToBeDeleted = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
 
             if (recordToBeDeleted.Text == "123456")
             {
                 //Find and click on delete button for last record
-                IWebElement deleteButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/div[2]/table/tbody/tr[last()]/td[5]/a[2]"));
+                IWebElement deleteButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
                 deleteButton.Click();
             }
             else
@@ -129,13 +131,13 @@ namespace February2023.Pages
                 Assert.Fail("Record to be deleted not found.");
             }
 
-            IWebElement lastRecordDelete = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
-            lastRecordDelete.Click();
-            Thread.Sleep(2000);
-
             //Acceptance on Pop up to delete record
             driver.SwitchTo().Alert().Accept();
 
+            driver.Navigate().Refresh();
+            Thread.Sleep(2000);
+
+            IWebElement lastRecordDelete = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
             Assert.That(lastRecordDelete.Text != "123456", "Record hasn't been deleted");
         }
     }
