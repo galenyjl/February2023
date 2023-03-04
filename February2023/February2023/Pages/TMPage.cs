@@ -14,6 +14,8 @@ namespace February2023.Pages
         public void CreateTM(IWebDriver driver)
         {
             // Click on Create New button
+            Thread.Sleep(1500);
+
             IWebElement createNewButton = driver.FindElement(By.XPath("//*[@id=\"container\"]/p/a"));
             createNewButton.Click();
             Thread.Sleep(1000);
@@ -87,13 +89,10 @@ namespace February2023.Pages
             }
 
 
-            //Identify Code Text Box and clear last record
-            driver.FindElement(By.XPath("//*[@id=\"Code\"]")).Clear();
-
-
-            //Identify Code Text Box and Write New Record
-            IWebElement CodeTextBox = driver.FindElement(By.XPath("//*[@id=\"Code\"]"));
-            CodeTextBox.SendKeys("123456");
+            // edit code textbox 
+            IWebElement editCodeTextbox = driver.FindElement(By.Id("Code"));
+            editCodeTextbox.Clear();
+            editCodeTextbox.SendKeys("123456");
             Thread.Sleep(1500);
 
             //Identify and Click on Save Button
@@ -104,8 +103,8 @@ namespace February2023.Pages
             //Identify and Click on Last Page Button Page
             driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]")).Click();
             Thread.Sleep(1500);
-            IWebElement lastEditedRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
 
+            IWebElement lastEditedRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
             Assert.That(lastEditedRecord.Text == "123456", "Record hasn't been edited.");
 
         }

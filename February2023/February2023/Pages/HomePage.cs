@@ -14,7 +14,7 @@ namespace February2023.Pages
         
         public void GoToTMPage(IWebDriver driver)
         {
-
+            Thread.Sleep(2000);
 
             // Navigate to Time and Material page
             IWebElement administrationDropdown = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a"));
