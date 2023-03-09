@@ -46,18 +46,38 @@ namespace February2023.StepDefinitions
 
             Assert.That(newCode == "February2023", "Actual code and expected code do not match.");
             Assert.That(newDescription == "Feb23", " Actual description and expected description do not match.");
-            Assert.That(newPrice == "12", " Actual price and expected price do not match.");
+            Assert.That(newPrice == "$12.00", " Actual price and expected price do not match.");
         }
 
-        [When(@"I update '([^']*)' on an existing time and material record")]
-        public void WhenIUpdateOnAnExistingTimeAndMaterialRecord(string description)
+        //[When(@"I update '([^']*)' on an existing time and material record")]
+        //public void WhenIUpdateOnAnExistingTimeAndMaterialRecord(string description)
+        //{
+        //    tmPageObj.EditTM(driver, description);
+        //}
+
+        //[Then(@"The record should have the updated '([^']*)'")]
+        //public void ThenTheRecordShouldHaveTheUpdated(string description)
+        //{
+
+        //}
+
+        [When(@"I update '([^']*)', '([^']*)', '([^']*)' on an existing time and material record")]
+        public void WhenIUpdateOnAnExistingTimeAndMaterialRecord(string description, string code, string price)
         {
-            tmPageObj.EditTM(driver, description);
+            tmPageObj.EditTM(driver, description, code, price);
+
         }
 
-        [Then(@"The record should have the updated '([^']*)'")]
-        public void ThenTheRecordShouldHaveTheUpdated(string description)
+        [Then(@"The record should have the updated '([^']*)', '([^']*)', '([^']*)'")]
+        public void ThenTheRecordShouldHaveTheUpdated(string description, string code, string price)
         {
+            string editedDescription = tmPageObj.GetEditedDescription(driver);
+            string editedCode = tmPageObj.GetEditedCode(driver);
+            string editedPrice = tmPageObj.GetEditedPrice(driver);
+
+            Assert.That(editedDescription == description, "Actual description and expected description do not match.");
+            Assert.That(editedCode == code, "Actual code and expected code do not match.");
+            Assert.That(editedPrice == price, "Actual price and expected price do not match.");
 
         }
 

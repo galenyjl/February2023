@@ -69,7 +69,7 @@ namespace February2023.Pages
             return actualPrice.Text;
         }
 
-        public void EditTM(IWebDriver driver, string description)
+        public void EditTM(IWebDriver driver, string description, string code, string price)
         {
             Wait.WaitToBeClickable(driver, "XPath", "//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[1]", 3);
 
@@ -96,13 +96,19 @@ namespace February2023.Pages
             // edit code textbox 
             IWebElement editCodeTextbox = driver.FindElement(By.Id("Code"));
             editCodeTextbox.Clear();
-            editCodeTextbox.SendKeys("123456");
+            editCodeTextbox.SendKeys(code);
             Thread.Sleep(1500);
 
             // edit description textbox
             IWebElement editDescriptionTextbox = driver.FindElement(By.Id("Description"));
             editDescriptionTextbox.Clear();
             editDescriptionTextbox.SendKeys(description);
+            Thread.Sleep(1500);
+
+            // edit price textbox
+            IWebElement editPriceTextbox = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[4]/div/span[1]/span/input[1]"));
+            editPriceTextbox.Clear();
+            editPriceTextbox.SendKeys(price);
             Thread.Sleep(1500);
 
             //Identify and Click on Save Button
@@ -123,6 +129,18 @@ namespace February2023.Pages
         {
             IWebElement createdDescription = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[3]"));
             return createdDescription.Text;
+        }
+
+        public string GetEditedCode(IWebDriver driver)
+        {
+            IWebElement createdCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+            return createdCode.Text;
+        }
+
+        public string GetEditedPrice(IWebDriver driver)
+        {
+            IWebElement createdPrice = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[4]/div/span[1]/span/input[1]"));
+            return createdPrice.Text;
         }
 
         public void DeleteTM(IWebDriver driver)
