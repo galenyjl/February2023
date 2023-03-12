@@ -106,9 +106,14 @@ namespace February2023.Pages
             Thread.Sleep(1500);
 
             // edit price textbox
-            IWebElement editPriceTextbox = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[4]/div/span[1]/span/input[1]"));
-            editPriceTextbox.Clear();
-            editPriceTextbox.SendKeys(price);
+            IWebElement overlappingTag = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[4]/div/span[1]/span/input[1]"));
+            IWebElement pricePerUnitTextbox = driver.FindElement(By.Id("Price"));
+
+            overlappingTag.Click();
+            pricePerUnitTextbox.Clear();
+            overlappingTag.Click();
+            Thread.Sleep(1000);
+            pricePerUnitTextbox.SendKeys(price);
             Thread.Sleep(1500);
 
             //Identify and Click on Save Button
@@ -119,9 +124,6 @@ namespace February2023.Pages
             //Identify and Click on Last Page Button Page
             driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]")).Click();
             Thread.Sleep(1500);
-
-            IWebElement lastEditedRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-            Assert.That(lastEditedRecord.Text == "123456", "Record hasn't been edited.");
 
         }
 
@@ -139,7 +141,7 @@ namespace February2023.Pages
 
         public string GetEditedPrice(IWebDriver driver)
         {
-            IWebElement createdPrice = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[4]/div/span[1]/span/input[1]"));
+            IWebElement createdPrice = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[4]"));
             return createdPrice.Text;
         }
 

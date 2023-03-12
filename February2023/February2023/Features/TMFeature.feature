@@ -18,7 +18,7 @@ Scenario Outline: Edit existing time and material record with valid details
 	Then The record should have the updated '<Description>', '<Code>', '<Price>'
 
 Examples: 
-| Description  | Code     | Price |
-| Time         | test     | 20    |
-| Material     | Keyboard | 100   |
-| EditedRecord | Mouse    | 500   |
+| Description  | Code     | Price   |
+| Time         | test     | $20.00  |
+| Material     | Keyboard | $100.00 |
+| EditedRecord | Mouse    | $500.00 |
